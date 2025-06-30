@@ -171,7 +171,7 @@ $ sudo docker-compose up --build
 > *Note:* In-case you want to add/remove/change anything in the *db/queries* make sure that you have [sqlc](https://docs.sqlc.dev/en/stable/overview/install.html) to run the following command while you are in *db/* directory:
 
 ```bash
-& sqlc generate 
+$ sqlc generate 
 ```
 > *Note:* In-case you want change migrations, go check the [goose](https://github.com/pressly/goose) github repository.
 
