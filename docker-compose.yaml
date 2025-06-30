@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  go-app:
+    env_file:
+      - path: ./.env
+        required: true
+    build: 
+      context: ./backend/
+      dockerfile: Dockerfile
+    container_name: go-app 
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: mysql 
+      DB_PORT: 3306
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD} 
+      DB_NAME: ${DB_NAME}
+    depends_on:
+      - mysql 
+    networks:
+      - app-network
+
+  frontend: 
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: react-app
+    ports:
+      - "5000:80"
+    depends_on: 
+      - go-app 
+      - mysql
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD} 
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  mysqldata:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,12 @@
+version: "2"
+sql: 
+    - engine: "mysql"
+      schema: "./migration"
+      queries: "./queries"
+      gen:
+        go:
+          package: "db"
+          out: "../internal/db"
+          emit_interface: true
+
+
